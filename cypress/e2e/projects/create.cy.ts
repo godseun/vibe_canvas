@@ -1,0 +1,63 @@
+describe('프로젝트 생성', () => {
+  beforeEach(() => {
+    // 테스트 사용자 생성 및 로그인
+    const testUser = {
+      name: "테스트사용자",
+      email: `test${Date.now()}@example.com`,
+      password: "123456",
+    }
+
+    // 회원가입
+    cy.visit("/register")
+    cy.get('input[name="name"]').should('be.visible').type(testUser.name)
+    cy.get('input[name="email"]').should('be.visible').type(testUser.email)
+    cy.get('input[name="password"]').should('be.visible').type(testUser.password)
+    cy.get('input[name="confirmPassword"]').should('be.visible').type(testUser.password)
+    cy.get('button[type="submit"]').should('be.visible').click()
+
+    // 로그인
+    cy.url().should("include", "/login")
+    cy.get('form').should('be.visible')
+    cy.get('input[name="email"]').should('be.visible').type(testUser.email)
+    cy.get('input[name="password"]').should('be.visible').type(testUser.password)
+    cy.get('button[type="submit"]').should('be.visible').click()
+
+    // 대시보드로 이동 확인
+    cy.url().should("include", "/dashboard")
+  })
+
+  it('대시보드에서 프로젝트 생성 버튼이 표시됨', () => {
+    cy.contains('button', '새 프로젝트 생성').should('be.visible')
+  })
+
+  it('프로젝트가 없을 때 안내 메시지가 표시됨', () => {
+    cy.contains('프로젝트가 없습니다').should('be.visible')
+    cy.contains('새로운 프로젝트를 생성하여 시작해보세요').should('be.visible')
+  })
+
+  it('프로젝트 생성 페이지로 이동', () => {
+    cy.contains('button', '새 프로젝트 생성').click()
+    cy.url().should('include', '/projects/new')
+  })
+
+  it('프로젝트 생성 및 목록 확인', () => {
+    // 프로젝트 생성 페이지로 이동
+    cy.contains('button', '새 프로젝트 생성').click()
+    cy.url().should('include', '/projects/new')
+
+    // 프로젝트 정보 입력
+    const projectName = '테스트 프로젝트'
+    const projectDescription = '테스트 프로젝트 설명'
+    
+    cy.get('input[id="name"]').type(projectName)
+    cy.get('textarea[id="description"]').type(projectDescription)
+    cy.get('button[type="submit"]').click()
+
+    // 대시보드로 리다이렉트 확인
+    cy.url().should('include', '/dashboard')
+
+    // 생성된 프로젝트 확인
+    cy.contains(projectName).should('be.visible')
+    cy.contains(projectDescription).should('be.visible')
+  })
+}) 
