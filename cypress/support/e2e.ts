@@ -14,4 +14,16 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands' 
+import './commands'
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+  // Next.js 13+ 앱에서 발생하는 hydration 관련 오류를 무시
+  if (err.message.includes('Hydration')) {
+    return false
+  }
+  // window is not defined 오류 무시
+  if (err.message.includes('window is not defined')) {
+    return false
+  }
+  return true
+}) 

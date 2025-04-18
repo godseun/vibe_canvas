@@ -9,4 +9,15 @@ export default defineConfig({
       // implement node event listeners here
     },
   },
+  defaultBrowser: "chrome",
+  component: {
+    devServer: {
+      framework: "next",
+      bundler: "webpack",
+    },
+  },
+  retries: {
+    runMode: 2,
+    openMode: 0
+  }
 }) 

@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import React from 'react'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
+import { Providers } from './providers'
+import { Navbar } from '@/components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,8 +21,11 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={inter.className}>
-        {children}
-        <Toaster />
+        <Providers>
+          <Navbar />
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   )
