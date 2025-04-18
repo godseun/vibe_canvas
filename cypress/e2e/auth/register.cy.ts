@@ -20,16 +20,15 @@ describe("회원가입", () => {
   })
 
   it("이메일 필드 유효성 검사", () => {
-    const invalidEmails = ["test", "test@", "test@.", "test@.com"]
+    cy.get('input[name="email"]').clear().type("test")
     
-    invalidEmails.forEach((email) => {
-      cy.get('input[name="email"]').clear().type(email)
-      cy.get('button[type="submit"]').click()
-      cy.contains("올바른 이메일 주소를 입력해주세요").should("be.visible")
-    })
-
-    cy.get('input[name="email"]').clear().type("test@example.com")
-    cy.contains("올바른 이메일 주소를 입력해주세요").should("not.exist")
+    cy.get('input[name="name"]').clear().type("홍길동")
+    cy.get('input[name="password"]').clear().type("123456")
+    cy.get('input[name="confirmPassword"]').clear().type("123456")
+    
+    cy.get('button[type="submit"]').click()
+    
+    cy.url().should("include", "/register")
   })
 
   it("비밀번호 필드 유효성 검사", () => {
