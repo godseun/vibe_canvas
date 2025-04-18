@@ -20,6 +20,7 @@ model User {
   sessions      Session[]
   projects      Project[]
   memberships   Membership[]
+  invitations   Invitation[]
 }
 
 model Account {
@@ -59,6 +60,7 @@ model Project {
   ownerId     String
   members     Membership[]
   canvases    Canvas[]
+  invitations Invitation[]
 }
 
 model Membership {
@@ -91,6 +93,21 @@ model Version {
   canvas    Canvas   @relation(fields: [canvasId], references: [id])
   canvasId  String
   createdAt DateTime @default(now())
+}
+
+model Invitation {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  email       String
+  role        Role     @default(EDITOR)
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId      String?
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  accepted    Boolean  @default(false)
+  acceptedAt  DateTime?
 }
 
 enum Role {
