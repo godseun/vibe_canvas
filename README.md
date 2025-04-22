@@ -2,6 +2,8 @@
 
 ## 주요 기능
 
+![바이브 캔버스 데모 1](https://github.com/user-attachments/assets/f997aa2c-7700-4f96-9bc7-75feac1f30e2)
+
 ### 드로잉 & 디자인
 - 다양한 도형 및 선 그리기
 - 텍스트 추가 및 편집
